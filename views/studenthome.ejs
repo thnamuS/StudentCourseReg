@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Home Page</title>
+    <link rel="stylesheet" href="css/studenthome.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Student Home Page</h1>
+        <form action="/logout" method="POST" class="logout-form">
+            <button type="submit">Logout</button>
+        </form>
+
+        <h2>All Courses</h2>
+        <div class="course-container">
+            <% coursesWithReviews.forEach(course => { %>
+                <div class="course-box">
+                    <strong>Course Name:</strong> <%= course.coursename %><br>
+                    <strong>Instructor:</strong> <%= course.instructor %><br>
+                    <div class="notes-box">
+                        <h3>Notes</h3>
+                        <div class="note-content">
+                            <%= course.notes %> 
+                        </div>
+                    </div>
+                    <h3>Ratings</h3>
+                    <ul>
+                        <% course.reviews.forEach(review => { %>
+                            <li>
+                                <strong>Rating (out of 5):</strong> <%= review.rating %><br>
+                                <strong>Review:</strong> <%= review.review %><br>
+                                <strong>Feedback:</strong> <%= review.feedback %><br>
+                            </li>
+                        <% }); %>
+                    </ul>
+                    <h3>Submit Review</h3>
+                    <form action="/submitReview" method="POST">
+                        <label for="name">Your Name:</label>
+                        <input type="text" id="name" name="name" required><br>
+                        <label for="rating">Rating:</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" required><br>
+                        <label for="review">Review:</label>
+                        <textarea id="review" name="review" rows="4" cols="50" required></textarea><br>
+                        <label for="feedback">Feedback:</label>
+                        <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea><br>
+                        <input type="hidden" name="courseId" value="<%= course.id %>">
+                        <button type="submit">Submit Review</button>
+                    </form>
+                </div>
+            <% }); %>
+        </div>
+
+        <h2>Ask a Question</h2>
+        <form action="/askQuestion" method="POST">
+            <label for="question">Your Question:</label>
+            <textarea id="question" name="question" rows="4" cols="50" required></textarea><br>
+            <button type="submit">Ask Question</button>
+        </form>
+
+        <!-- <div class="container">
+            <h2>Check Answer</h2>
+            <form action="/checkAnswer" method="POST" class="check-answer-form">
+                <button type="submit">Check Answer</button>
+            </form>
+     -->
+             <% if (successMessage) { %>
+                <div class="success-message">
+                    <%= successMessage %>
+                </div>
+            <% } %>
+        </div> 
+        <div class="container">
+            <h2 class="section-title">Past Questions and Answers</h2>
+            <% pastQuestions.forEach(question => { %>
+                <div class="question-box">
+                    <p class="question-text"><strong>Question:</strong> <%= question.question_text %></p>
+                    <p class="answer-text"><strong>Answer:</strong> <%= question.answer %></p>
+                </div>
+            <% }); %>
+        </div>        
+    </div>
+</body>
+</html>
